@@ -62,7 +62,8 @@ function helpers.wrequire(table, key)
     local ostable = {
         linux = { "linux", "all" },
         freebsd = { "freebsd", "bsd", "all" },
-        openbsd = { "openbsd", "bsd", "all" }
+        openbsd = { "openbsd", "bsd", "all" },
+        netbsd = { "netbsd", "bsd", "all" }
     }
 
     local os = ostable[helpers.getos()]
