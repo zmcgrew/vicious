@@ -20,7 +20,17 @@ local function worker(format, warg)
         ["v"]   = "N/A", ["mv"]  = "N/A",
     }
 
+    -- Aarch64
     local freq = tonumber(helpers.sysctl("machdep.cpu.frequency.current"))
+
+    if not freq then
+      -- Intel SpeedStep
+      freq = tonumber(helpers.sysctl("machdep.est.frequency.current"))
+      if not freq then
+        -- AMD PowerNow!
+        freq = tonumber(helpers.sysctl("machdep.powernow.frequency.current"))
+      end
+    end
 
     freqv.mhz = freq
     freqv.ghz = freq / 1000
