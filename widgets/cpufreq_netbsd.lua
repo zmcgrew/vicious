@@ -4,6 +4,16 @@ local setmetatable = setmetatable
 local helpers = require("vicious.helpers")
 -- }}}
 
+--[[
+  Possible values for your system to pass to warg
+  Aarch64
+    machdep.cpu.frequency.current
+  Intel SpeedStep
+    machdep.est.frequency.current
+  AMD PowerNow!
+    machdep.powernow.frequency.current
+--]]
+
 
 -- Cpufreq: provides freq, voltage and governor info for a requested CPU
 -- vicious.widgets.cpufreq
@@ -20,17 +30,7 @@ local function worker(format, warg)
         ["v"]   = "N/A", ["mv"]  = "N/A",
     }
 
-    -- Aarch64
-    local freq = tonumber(helpers.sysctl("machdep.cpu.frequency.current"))
-
-    if not freq then
-      -- Intel SpeedStep
-      freq = tonumber(helpers.sysctl("machdep.est.frequency.current"))
-      if not freq then
-        -- AMD PowerNow!
-        freq = tonumber(helpers.sysctl("machdep.powernow.frequency.current"))
-      end
-    end
+    local freq = tonumber(helpers.sysctl(warg))
 
     freqv.mhz = freq
     freqv.ghz = freq / 1000
